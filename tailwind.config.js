@@ -18,6 +18,9 @@ module.exports = {
           1: `#1C1F2E`,
           2: `#161925`,
         },
+        blue: {
+          1: `#1A73FF`,
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
