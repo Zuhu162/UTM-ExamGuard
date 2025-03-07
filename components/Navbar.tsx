@@ -19,12 +19,13 @@ const Navbar = () => {
           UTM ExamGuard
         </p>
       </Link>
-      <div className="flex-between gap-5 sm:hidden">
+      <div className="flex-between gap-5">
         <SignedIn>
           <UserButton />
         </SignedIn>
-
-        <MobileNav />
+        <div className="sm:hidden">
+          <MobileNav />
+        </div>
       </div>
     </nav>
   );
