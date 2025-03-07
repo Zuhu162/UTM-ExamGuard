@@ -1,9 +1,8 @@
 "use client";
-
 import Image from "next/image";
 import React from "react";
 
-const MeetingTypeList = () => {
+export const MeetingTypeList = () => {
   return (
     <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
       <div
@@ -25,5 +24,3 @@ const MeetingTypeList = () => {
     </section>
   );
 };
-
-export default MeetingTypeList;
