@@ -1,19 +1,31 @@
-import { PaginatedGridLayout, SpeakerLayout } from "@stream-io/video-react-sdk";
+import { cn } from "@/lib/utils";
+import {
+  CallControls,
+  CallParticipantsList,
+  CallStatsButton,
+  CallingState,
+  PaginatedGridLayout,
+  SpeakerLayout,
+  useCallStateHooks,
+} from "@stream-io/video-react-sdk";
 import React, { useState } from "react";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 const MeetingRoom = () => {
-  const [layout, setLayout] = useState("speaker-left");
+  const [layout, setLayout] = useState<CallLayoutType>("grid");
+  const [showParticipants, setShowParticipants] = useState(false);
 
-  //Change layout based on selected grid
+  const { useCallCallingState } = useCallStateHooks();
+  const callingState = useCallCallingState();
+
+  console.log("Current calling state:", callingState);
+
   const CallLayout = () => {
     switch (layout) {
       case "grid":
         return <PaginatedGridLayout />;
-
       case "speaker-right":
         return <SpeakerLayout participantsBarPosition="left" />;
-
       default:
         return <SpeakerLayout participantsBarPosition="right" />;
     }
@@ -25,6 +37,15 @@ const MeetingRoom = () => {
         <div className="flex size-full max-w-[1000px] items-center">
           <CallLayout />
         </div>
+        <div
+          className={cn("h-[calc(100vh-86px)] hidden ml-2", {
+            "block": showParticipants,
+          })}>
+          <CallParticipantsList onClose={() => setShowParticipants(false)} />
+        </div>
+      </div>
+      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
+        <CallControls />
       </div>
     </section>
   );

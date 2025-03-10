@@ -16,13 +16,32 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
 
   if (!isLoaded || isCallLoading) return <Loader />;
 
+  if (!call)
+    return (
+      <p className="text-center text-3xl font-bold text-white">
+        Call Not Found
+      </p>
+    );
+
+  // Make sure to join the call first
+  const handleSetupComplete = async () => {
+    try {
+      // This explicit join helps ensure the call is properly connected
+      if (call && call.state.callingState === "idle") {
+        await call.join({ create: true });
+      }
+      setIsSetupComplete(true);
+    } catch (error) {
+      console.error("Error joining call:", error);
+    }
+  };
+
   return (
     <main className="h-screen w-full">
       <StreamCall call={call}>
         <StreamTheme>
-          {/* If setup is completed create meeting room or navigate to setup */}
           {!isSetupComplete ? (
-            <MeetingSetup setIsSetupComplete={setIsSetupComplete} />
+            <MeetingSetup setIsSetupComplete={handleSetupComplete} />
           ) : (
             <MeetingRoom />
           )}
@@ -31,5 +50,4 @@ const Meeting = ({ params: { id } }: { params: { id: string } }) => {
     </main>
   );
 };
-
 export default Meeting;
