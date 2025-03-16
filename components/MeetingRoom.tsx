@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import {
   CallControls,
@@ -18,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LayoutList, Users } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import EndCallButton from "./EndCallButton";
 
 type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
@@ -27,7 +29,7 @@ const MeetingRoom = () => {
   const isPersonalRoom = !!searchParams.get("personal"); //Check if this is a personal meeting
   const [layout, setLayout] = useState<CallLayoutType>("grid");
   const [showParticipants, setShowParticipants] = useState(false);
-
+  const router = useRouter();
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
 
@@ -51,14 +53,17 @@ const MeetingRoom = () => {
           <CallLayout />
         </div>
         <div
-          className={cn("h-[calc(100vh-86px)] hidden ml-2", {
-            "block": showParticipants,
-          })}>
+          className={cn(
+            "h-[calc(100vh-86px)] fixed right-5 top-4 hidden ml-2",
+            {
+              "block": showParticipants,
+            }
+          )}>
           <CallParticipantsList onClose={() => setShowParticipants(false)} />
         </div>
       </div>
-      <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
-        <CallControls />
+      <div className="fixed bottom-0 flex flex-wrap w-full items-center justify-center gap-5">
+        <CallControls onLeave={() => router.push(`/`)} />
         <DropdownMenu>
           <div className="flex items-center">
             <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg[#19232d] py-2 px-4 hover:bg-[#4c535b]">
