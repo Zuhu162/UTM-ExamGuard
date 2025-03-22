@@ -10,7 +10,7 @@ import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { toast } from "sonner";
 import { Textarea } from "./ui/textarea";
 import DatePicker from "react-datepicker";
-
+import "react-datepicker/dist/react-datepicker.css";
 const MeetingTypeList = () => {
   const router = useRouter();
   const [meetingState, setMeetingState] = useState<
@@ -110,10 +110,14 @@ const MeetingTypeList = () => {
               Select Date and Time
             </label>
             <DatePicker
+              className="w-full rounded bg-dark-3 p-2 focus:outline-none"
               selected={values.dateTime}
-              onChange={(date) =>
-                setValues({ ...values, dateTime: date! })
-              }></DatePicker>
+              onChange={(date) => setValues({ ...values, dateTime: date! })}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              timeCaption="time"
+              dateFormat="MMMM d, yyyy h:mm aa"></DatePicker>
           </div>
         </MeetingModal>
       ) : (
@@ -123,7 +127,7 @@ const MeetingTypeList = () => {
           title="Meeting Created"
           className="text-center"
           handleClick={() => {
-            // navigator.clipboard.writeText(meetingLinks);
+            // navigator.clipboard.writeText(meetingLinks );
             toast("Link copied");
           }}
           image="/icons/checked.svg"
